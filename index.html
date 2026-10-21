@@ -1678,6 +1678,7 @@ main {
 }
 
 .project-grid{grid-template-columns:repeat(3,minmax(0,1fr))}@media(max-width:850px){.project-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:540px){.project-grid{grid-template-columns:1fr}}.project-media,.project-grid-card__media img,.project-thumb img{filter:none!important}.project-grid-card__overlay{opacity:1;background:linear-gradient(transparent 35%,rgba(0,0,0,.78));color:#fff}.project-grid-card__media .project-media{object-fit:contain;background:#242424}.wordmark{font-family:Arial,sans-serif;font-size:17px;text-decoration:none;letter-spacing:-.04em}.run-sketch{padding:16px 24px;background:var(--text);color:var(--bg);border:1px solid var(--line);border-radius:2px;font:inherit;cursor:pointer}.project-feature__embed iframe{height:700px;max-height:85vh}.about-page__contact a{color:inherit;display:block;margin:20px 0}.project-feature__body a{overflow-wrap:anywhere}
+.project-grid-card__media{position:relative;overflow:hidden}.live-cover{position:absolute;left:50%;top:50%;border:0;pointer-events:none;max-width:none;max-height:none;background:#242424}.project-grid-card__overlay{z-index:2}.portrait-cover.cover-playing img{animation:portrait-sway 6s ease-in-out infinite;transform-origin:50% 65%}.portrait-cover img{animation-play-state:paused}.cover-motion-toggle{border:1px solid var(--line);background:transparent;color:var(--text);padding:8px 12px;font:inherit;font-size:12px;cursor:pointer;border-radius:4px}.cover-motion-toggle:focus-visible{outline:2px solid var(--text);outline-offset:3px}@keyframes portrait-sway{0%,100%{transform:scale(1.02) rotate(-1.2deg)}50%{transform:scale(1.065) rotate(1.2deg)}}@media(prefers-reduced-motion:reduce){.portrait-cover.cover-playing img{animation:none}}
 </style></head>
   <body>
     <a class="skip-link" href="#work">Skip to work</a>
@@ -2277,6 +2278,53 @@ main {
     return thumbnail;
   };
 
+  // Run the original artwork as an isolated, non-interactive cover preview.
+  let coversPaused = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const liveCovers = new Map();
+  const updateCover = (entry) => {
+    const { media, project, index, visible } = entry;
+    const playing = visible && !coversPaused && !document.hidden;
+    media.classList.toggle('cover-playing', playing);
+    if (index === 0) return; // The original portrait is static; animate its presentation only.
+    if (!playing) { entry.frame?.remove(); entry.resize?.disconnect(); entry.frame = null; return; }
+    if (entry.frame) return;
+    const frame = document.createElement('iframe');
+    frame.className = 'live-cover'; frame.title = project.title + ' animated cover';
+    frame.setAttribute('aria-hidden', 'true'); frame.tabIndex = -1;
+    frame.setAttribute('sandbox', 'allow-scripts');
+    const w = index === 2 ? 700 : 960, h = index === 2 ? 700 : 540;
+    frame.style.width = w + 'px'; frame.style.height = h + 'px';
+    const previewCode = `
+      const originalSetup = setup;
+      setup = async function() { await originalSetup(); frameRate(12); };
+      const originalDraw = draw;
+      draw = function() {
+        ${index === 3 ? 'mouseX = width * (0.35 + 0.22 * Math.sin(frameCount / 28));' : ''}
+        originalDraw();
+        ${index === 1 ? 'if (frameCount % 120 === 0) background(bgcolor);' : ''}
+        ${index === 4 ? 'if (img && stripImg && frameCount % 84 === 0) { image(img, 0, 0, width, height); stripCount = 0; }' : ''}
+      };
+    `;
+    frame.srcdoc = project.srcdoc.replace('<\/script></body>', previewCode + '<\/script></body>');
+    const fit = () => { frame.style.transform = `translate(-50%, -50%) scale(${Math.min(media.clientWidth / w, media.clientHeight / h)})`; };
+    media.append(frame); entry.frame = frame;
+    fit(); entry.resize = new ResizeObserver(fit); entry.resize.observe(media);
+  };
+  const coverObserver = new IntersectionObserver((entries) => entries.forEach(item => {
+    const entry = liveCovers.get(item.target); entry.visible = item.isIntersecting; updateCover(entry);
+  }), { threshold: 0.05 });
+  document.addEventListener('visibilitychange', () => liveCovers.forEach(updateCover));
+  const motionControl = document.createElement('button');
+  motionControl.type = 'button'; motionControl.className = 'cover-motion-toggle';
+  const syncMotion = () => {
+    motionControl.textContent = coversPaused ? 'Play covers' : 'Pause covers';
+    motionControl.setAttribute('aria-label', coversPaused ? 'Play animated covers' : 'Pause animated covers');
+    motionControl.setAttribute('aria-pressed', String(!coversPaused));
+    liveCovers.forEach(updateCover);
+  };
+  motionControl.addEventListener('click', () => { coversPaused = !coversPaused; syncMotion(); });
+  document.querySelector('.site-nav').prepend(motionControl); syncMotion();
+
   const createGridCard = (project, index) => {
     const card = document.createElement("article");
     card.className = "project-grid-card";
@@ -2289,6 +2337,9 @@ main {
     const media = document.createElement("span");
     media.className = "project-grid-card__media";
     media.append(createMediaElement(project.media[0], project.alt));
+    if (index === 0) media.classList.add('portrait-cover');
+    const coverEntry = {media, project, index, visible: false, frame: null};
+    liveCovers.set(media, coverEntry); coverObserver.observe(media);
 
     const overlay = document.createElement("span");
     overlay.className = "project-grid-card__overlay";
