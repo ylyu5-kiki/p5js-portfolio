@@ -1677,8 +1677,9 @@ main {
   }
 }
 
-.project-grid{grid-template-columns:repeat(3,minmax(0,1fr))}@media(max-width:850px){.project-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:540px){.project-grid{grid-template-columns:1fr}}.project-media,.project-grid-card__media img,.project-thumb img{filter:none!important}.project-grid-card__overlay{opacity:1;background:linear-gradient(transparent 35%,rgba(0,0,0,.78));color:#fff}.project-grid-card__media .project-media{object-fit:contain;background:#242424}.wordmark{font-family:Arial,sans-serif;font-size:17px;text-decoration:none;letter-spacing:-.04em}.run-sketch{padding:16px 24px;background:var(--text);color:var(--bg);border:1px solid var(--line);border-radius:2px;font:inherit;cursor:pointer}.project-feature__embed iframe{height:700px;max-height:85vh}.about-page__contact a{color:inherit;display:block;margin:20px 0}.project-feature__body a{overflow-wrap:anywhere}
-.project-grid-card__media{position:relative;overflow:hidden}.live-cover{position:absolute;left:50%;top:50%;border:0;pointer-events:none;max-width:none;max-height:none;background:#242424}.project-grid-card__overlay{z-index:2}.portrait-cover.cover-playing img{animation:portrait-sway 6s ease-in-out infinite;transform-origin:50% 65%}.portrait-cover img{animation-play-state:paused}.cover-motion-toggle{border:1px solid var(--line);background:transparent;color:var(--text);padding:8px 12px;font:inherit;font-size:12px;cursor:pointer;border-radius:4px}.cover-motion-toggle:focus-visible{outline:2px solid var(--text);outline-offset:3px}@keyframes portrait-sway{0%,100%{transform:scale(1.02) rotate(-1.2deg)}50%{transform:scale(1.065) rotate(1.2deg)}}@media(prefers-reduced-motion:reduce){.portrait-cover.cover-playing img{animation:none}}
+.project-grid{grid-template-columns:repeat(4,minmax(0,1fr));max-width:1080px;margin:20px auto;padding:0 20px;gap:16px}@media(max-width:850px){.project-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:540px){.project-grid{grid-template-columns:repeat(2,minmax(0,1fr));padding:0 10px;gap:10px}}.project-media,.project-grid-card__media img,.project-thumb img{filter:none!important}.project-grid-card__overlay{opacity:1;background:linear-gradient(transparent 35%,rgba(0,0,0,.78));color:#fff}.project-grid-card__media .project-media{object-fit:contain;background:#242424}.wordmark{font-family:Arial,sans-serif;font-size:17px;text-decoration:none;letter-spacing:-.04em}.run-sketch{padding:16px 24px;background:var(--text);color:var(--bg);border:1px solid var(--line);border-radius:2px;font:inherit;cursor:pointer}.project-feature__embed iframe{height:700px;max-height:85vh}.about-page__contact a{color:inherit;display:block;margin:20px 0}.project-feature__body a{overflow-wrap:anywhere}
+.project-grid-card__media{position:relative;overflow:hidden}.live-cover{position:absolute;left:50%;top:50%;border:0;pointer-events:auto;max-width:none;max-height:none;background:#242424}.project-grid-card__overlay{z-index:2}.portrait-cover.cover-playing img{animation:portrait-sway 6s ease-in-out infinite;transform-origin:50% 65%}.portrait-cover img{animation-play-state:paused}.cover-motion-toggle{border:1px solid var(--line);background:transparent;color:var(--text);padding:8px 12px;font:inherit;font-size:12px;cursor:pointer;border-radius:4px}.cover-motion-toggle:focus-visible{outline:2px solid var(--text);outline-offset:3px}@keyframes portrait-sway{0%,100%{transform:scale(1.02) rotate(-1.2deg)}50%{transform:scale(1.065) rotate(1.2deg)}}@media(prefers-reduced-motion:reduce){.portrait-cover.cover-playing img{animation:none}}
+.project-grid-card__trigger{cursor:default}.project-grid-card__overlay{position:relative;inset:auto;opacity:1;transform:none;display:flex;flex-direction:column;align-items:flex-start;gap:5px;padding:10px 12px;background:transparent;color:var(--text)}.project-grid-card__title{font-size:14px}.project-grid-card__meta{font-size:10px}.project-grid-card__action{border:0;background:transparent;color:inherit;font:inherit;font-size:11px;padding:4px 0;cursor:pointer}.portrait-cover.cover-playing img{animation:none!important}.project-feature__image-frame{max-width:440px}.project-feature__embed iframe{height:480px;max-width:700px}.project-grid-card__media{cursor:crosshair}
 </style></head>
   <body>
     <a class="skip-link" href="#work">Skip to work</a>
@@ -2285,27 +2286,15 @@ main {
     const { media, project, index, visible } = entry;
     const playing = visible && !coversPaused && !document.hidden;
     media.classList.toggle('cover-playing', playing);
-    if (index === 0) return; // The original portrait is static; animate its presentation only.
     if (!playing) { entry.frame?.remove(); entry.resize?.disconnect(); entry.frame = null; return; }
     if (entry.frame) return;
     const frame = document.createElement('iframe');
-    frame.className = 'live-cover'; frame.title = project.title + ' animated cover';
-    frame.setAttribute('aria-hidden', 'true'); frame.tabIndex = -1;
+    frame.className = 'live-cover'; frame.title = project.title + ' running sketch';
+    frame.tabIndex = 0;
     frame.setAttribute('sandbox', 'allow-scripts');
-    const w = index === 2 ? 700 : 960, h = index === 2 ? 700 : 540;
+    const w = index === 0 ? 500 : index === 2 ? 700 : 960, h = index === 0 ? 500 : index === 2 ? 700 : 540;
     frame.style.width = w + 'px'; frame.style.height = h + 'px';
-    const previewCode = `
-      const originalSetup = setup;
-      setup = async function() { await originalSetup(); frameRate(12); };
-      const originalDraw = draw;
-      draw = function() {
-        ${index === 3 ? 'mouseX = width * (0.35 + 0.22 * Math.sin(frameCount / 28));' : ''}
-        originalDraw();
-        ${index === 1 ? 'if (frameCount % 120 === 0) background(bgcolor);' : ''}
-        ${index === 4 ? 'if (img && stripImg && frameCount % 84 === 0) { image(img, 0, 0, width, height); stripCount = 0; }' : ''}
-      };
-    `;
-    frame.srcdoc = project.srcdoc.replace('<\/script></body>', previewCode + '<\/script></body>');
+    frame.srcdoc = project.srcdoc;
     const fit = () => { frame.style.transform = `translate(-50%, -50%) scale(${Math.min(media.clientWidth / w, media.clientHeight / h)})`; };
     media.append(frame); entry.frame = frame;
     fit(); entry.resize = new ResizeObserver(fit); entry.resize.observe(media);
@@ -2329,9 +2318,9 @@ main {
     const card = document.createElement("article");
     card.className = "project-grid-card";
 
-    const button = document.createElement("button");
+    const button = document.createElement("div");
     button.className = "project-grid-card__trigger";
-    button.type = "button";
+
     button.setAttribute("aria-label", `Open ${project.title}`);
 
     const media = document.createElement("span");
@@ -2343,7 +2332,7 @@ main {
 
     const overlay = document.createElement("span");
     overlay.className = "project-grid-card__overlay";
-    overlay.setAttribute("aria-hidden", "true");
+
 
     const title = document.createElement("span");
     title.className = "project-grid-card__title";
@@ -2353,14 +2342,14 @@ main {
     meta.className = "project-grid-card__meta";
     meta.textContent = project.meta;
 
-    const action = document.createElement("span");
-    action.className = "project-grid-card__action";
+    const action = document.createElement("button");
+    action.className = "project-grid-card__action"; action.type = "button"; action.setAttribute("aria-label", `View ${project.title} details`);
     action.innerHTML =
       'View project <svg aria-hidden="true" viewBox="0 0 24 24" focusable="false"><path d="M4 12h15M13 5l7 7-7 7" /></svg>';
 
     overlay.append(title, meta, action);
     button.append(media, overlay);
-    button.addEventListener("click", () => showDetail(index));
+    action.addEventListener("click", () => showDetail(index));
     card.append(button);
 
     return card;
