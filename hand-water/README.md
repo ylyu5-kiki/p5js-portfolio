@@ -1,10 +1,10 @@
-# 掌心水面 / Hand Water
+# Hand Water
 
 A camera-based interactive artwork: move an open hand to disturb a transparent glass-like water surface; close it into a fist to gather white particles, then open it to release water again.
 
 ## Experience
 
-Open the hosted page in a desktop browser, choose **开启摄像头** (Enable camera), and allow camera access. Keep one hand and your face visible in good light. The page also offers a mouse demo before starting the camera.
+Open the hosted page in a desktop browser, choose **Enable camera**, and allow camera access. Keep one hand and your face visible in good light. The initial screen shows only the camera access button, with no background animation.
 
 - Open hand: liquid refraction and ripples.
 - Closed fist: a compact particle cloud with particles orbiting the fist.
@@ -20,7 +20,7 @@ From the repository root:
 python3 -m http.server 8000
 ```
 
-Open `http://localhost:8000/hand-water/`. Camera access requires HTTPS or localhost. First use requires internet access for the pinned MediaPipe runtime and models. No build step is needed.
+Open `http://localhost:8000/hand-water/`. Camera access requires HTTPS or localhost. Stopping the camera returns to the camera access screen. First use requires internet access for the pinned MediaPipe runtime and models. No build step is needed.
 
 ## Technology and privacy
 

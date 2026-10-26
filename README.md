@@ -1,7 +1,7 @@
 # p5js-portfolio
 My creative coding portfolio — p5.js projects and experiments.
 
-## Hand Water / 掌心水面
+## Hand Water
 
 [Open the interactive artwork](https://ylyu5-kiki.github.io/p5js-portfolio/hand-water/) · [Source and local setup](hand-water/README.md)
 
