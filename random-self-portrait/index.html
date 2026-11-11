@@ -1,0 +1,217 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><style>html,body{margin:0;background:#fff}canvas{display:block;max-width:100%;height:auto!important}main{display:flex;justify-content:center}</style><script src="https://cdn.jsdelivr.net/npm/p5@2.3.2/lib/p5.js"></script></head><body><main></main><script>let bgcolor = '#D7D7EF';
+
+let palette = [
+  '#FF99E7',
+  '#B8FF99',
+  '#E3B5C3',
+  '#DBB3D7',
+  '#C2DBB3',
+  '#795877',
+  '#FF5D8F',
+  '#ECEC69'
+]
+
+function setup() {
+  createCanvas(windowWidth, windowHeight);
+  background(bgcolor);
+  frameRate(10);
+}
+
+function draw() {
+let x = random(0.1, 0.9) * width;
+  let y = random(0.1, 0.9) * height;
+
+let size = random(10, 50);
+
+  fill(random(palette));
+  noStroke();
+
+let shapeChoice = random(0, 1);
+ 
+  if (shapeChoice < 0.4){
+
+  circle( x, y, size);}
+    else if (shapeChoice < 0.7){
+    rectMode(CENTER);
+    rect(x, y, size, size);
+    } else{
+     
+      triangle(
+        x,y - size / 2,
+        x - size / 2,
+        y + size / 2,
+        x + size / 2,
+        y + size / 2,
+      );
+    }
+  
+stroke(random(palette));
+  strokeWeight(random(0.3, 2));
+
+
+line(
+  x, y,
+  random(width * 0.3, width * 0.7),
+  random(height * 0.2, height * 0.8)
+);
+  
+drawHair();
+  
+drawFace();
+}
+
+function drawHair(){
+stroke('black');
+
+  for (let i = 0; i < 2; i=i+1){
+    strokeWeight(random(1,5));
+    //left hair
+    let startx = random(
+      width / 2 -160,
+      width / 2 -60
+    );
+    let starty = random(
+      height / 2 -180,
+      height / 2 -80
+    );
+
+  let endx = random(
+    width / 2 -230,
+    width / 2 - 100
+  );
+  
+  let endy = random(
+    height / 2,
+    height / 2 + 230
+  );
+  line(startx, starty, endx, endy); 
+
+  //right hair
+
+let start1 = random(
+  width / 2 + 60,
+  width / 2 +160
+);
+
+let start2 = random(
+  height / 2 -180,
+  height / 2 -80
+);
+let end1 = random(
+  width / 2 + 100,
+  width / 2 + 230
+);
+let end2 = random(
+  height / 2,
+  height / 2+ 230
+);
+    line( start1, start2, end1, end2);
+    
+  }
+
+  //top hair
+  for(let i = 0; i< 4; i= i+1){
+    strokeWeight(random(1,4));
+    let x1 = random(
+      width / 2 - 150,
+      width / 2 + 150
+    );
+
+    let y1 = random(
+      height / 2 - 180,
+      height / 2 - 130
+    );
+
+    let x2 = random(
+      width / 2 - 100,
+      width / 2 + 100
+    );
+
+    let y2 = random(
+      height / 2 - 220,
+      height / 2 - 150
+    );
+
+    line(x1, y1, x2, y2);
+  }
+  }
+
+// eyes mose mouth
+
+function drawFace(){
+  let centerx = width / 2;
+  let centery = height / 2;
+
+  let eyeMovex = random(-10, 10);
+  let eyeMovey = random(-8,8);
+  
+  let noseMovex = random(-8,8);
+  let noseMovey = random(-6,6);
+
+  let mouthMovex = random(-12,12);
+  let mouthMovey = random(-8,8);
+
+
+  stroke('black');
+  strokeWeight(random(1,2));
+  fill('white');
+ 
+  ellipse(
+    centerx-80 + eyeMovex,
+    centery- 60 + eyeMovey,
+    60,
+    40
+  );
+fill('black');
+  circle(
+    centerx - 90 + eyeMovex,
+    centery - 60 +eyeMovey,
+    18
+  );
+  //left eye
+
+  fill('white');
+  ellipse(
+    centerx+ 90 + eyeMovex,
+    centery - 60 + eyeMovey,
+    80,
+    50
+  );
+fill('black');
+
+circle(centerx + 90- eyeMovex,
+      centery - 60 + eyeMovey,
+      18);
+//right eye
+
+fill(random(palette));
+  stroke(random(1,2));
+  strokeWeight(4);
+
+triangle(
+    centerx + noseMovex,
+    centery - 10 + noseMovey,
+
+    centerx - 25 + noseMovex,
+    centery + 60 + noseMovey,
+
+    centerx + 25 + noseMovex,
+    centery + 60 + noseMovey
+  );
+//nose
+
+stroke('#EC6969');
+  strokeWeight(5);
+  noFill();
+
+  arc(
+    centerx + mouthMovex,
+    centery + 120 + mouthMovey,
+    100,
+    50,
+    0,
+    PI
+  );  
+}
+//mouth
+</script></body></html>

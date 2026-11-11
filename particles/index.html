@@ -1,0 +1,213 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><style>html,body{margin:0;background:#fff}canvas{display:block;max-width:100%;height:auto!important}main{display:flex;justify-content:center}</style><script src="https://cdn.jsdelivr.net/npm/p5@2.3.2/lib/p5.js"></script></head><body><main></main><script>let particles = [];
+
+const N_PARTICLES = 50;
+const MAX_PARTICLES = 350;
+const CONNECT_DISTANCE = 100;
+
+const bg_color = "#4A4A4A";
+
+const PALETTE = [
+  "#70FFD2",
+  "#A78BFA",
+  "#FB7185",
+  "#E2B4BD",
+  "#FFF8CF"
+];
+
+class Particle {
+  constructor(x, y, type = "background") {
+    this.x = x;
+    this.y = y;
+    this.type = type;
+
+    this.size = random(8, 20);
+    this.color = random(PALETTE);
+    this.shape = random(["circle", "square", "triangle"]);
+
+    this.vx = random(-0.8, 0.8);
+    this.vy = random(-0.8, 0.8);
+
+    this.angle = random(TWO_PI);
+    this.spin = random(-0.02, 0.02);
+
+    if (this.type === "drawing") {
+      this.vx = 0;
+      this.vy = 0;
+      this.spin = 0;
+    }
+  } 
+
+  update() {
+    this.x += this.vx;
+    this.y += this.vy;
+    this.angle += this.spin;
+
+    // 
+    if (this.type === "burst") {
+      this.vx *= 0.96;
+      this.vy *= 0.96;
+    }
+
+    // 
+    if (this.type === "background") {
+      let margin = this.size;
+
+      if (this.x > width + margin) {
+        this.x = -margin;
+      }
+
+      if (this.x < -margin) {
+        this.x = width + margin;
+      }
+
+      if (this.y > height + margin) {
+        this.y = -margin;
+      }
+
+      if (this.y < -margin) {
+        this.y = height + margin;
+      }
+    }
+  } 
+
+  display() {
+    push();
+
+    translate(this.x, this.y);
+    rotate(this.angle);
+
+    fill(this.color);
+    noStroke();
+
+    if (this.shape === "circle") {
+      circle(0, 0, this.size);
+    } else if (this.shape === "square") {
+      rect(0, 0, this.size, this.size);
+    } else {
+      triangle(
+        0, -this.size / 2,
+        -this.size / 2, this.size / 2,
+        this.size / 2, this.size / 2
+      );
+    }
+
+    pop();
+  } 
+
+  connect(other) {
+    let d = dist(this.x, this.y, other.x, other.y);
+
+    if (d < CONNECT_DISTANCE) {
+      let opacity = map(
+        d, 0, CONNECT_DISTANCE, 160, 0
+      );
+
+      let lineColor = color(this.color);
+      lineColor.setAlpha(opacity);
+
+      stroke(lineColor);
+      strokeWeight(2);
+
+      line(this.x, this.y, other.x, other.y);
+    }
+  } 
+} 
+
+function setup() {
+  createCanvas(700, 700);
+  rectMode(CENTER);
+
+  for (let i = 0; i < N_PARTICLES; i++) {
+    particles.push(
+      new Particle(random(width), random(height))
+    );
+  }
+}
+
+function draw() {
+  background(bg_color);
+
+  
+  for (let p of particles) {
+    p.update();
+  }
+
+  
+  for (let i = 0; i < particles.length; i++) {
+    for (let j = i + 1; j < particles.length; j++) {
+      particles[i].connect(particles[j]);
+    }
+  }
+
+  
+  for (let p of particles) {
+    p.display();
+  }
+}
+
+function insideCanvas() {
+  return (
+    mouseX >= 0 && mouseX < width &&
+    mouseY >= 0 && mouseY < height
+  );
+}
+
+function addParticle(p) {
+  particles.push(p);
+
+  
+  if (particles.length > MAX_PARTICLES) {
+    particles.splice(N_PARTICLES, 1);
+  }
+}
+
+function mousePressed() {
+  if (!insideCanvas()) return;
+
+  let count = 12;
+
+  for (let i = 0; i < count; i++) {
+    let angle = TWO_PI * i / count;
+
+    let p = new Particle(mouseX, mouseY, "burst");
+
+    let speed = random(2, 4);
+    p.vx = cos(angle) * speed;
+    p.vy = sin(angle) * speed;
+
+    addParticle(p);
+  }
+}
+
+function mouseDragged() {
+  if (!insideCanvas()) return;
+
+  let distance = dist(
+    pmouseX, pmouseY, mouseX, mouseY
+  );
+
+  if (distance === 0) return;
+
+  let steps = ceil(distance / 12);
+
+  for (let i = 1; i <= steps; i++) {
+    let t = i / steps;
+
+    let x = lerp(pmouseX, mouseX, t);
+    let y = lerp(pmouseY, mouseY, t);
+
+    addParticle(new Particle(x, y, "drawing"));
+  }
+
+  return false;
+}
+
+function keyPressed() {
+  if (key === " ") {
+    particles = particles.filter(
+      p => p.type === "background"
+    );
+
+    return false;
+  }
+}</script></body></html>

@@ -1,0 +1,60 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><style>html,body{margin:0;background:#fff}canvas{display:block;max-width:100%;height:auto!important}main{display:flex;justify-content:center}</style><script src="https://cdn.jsdelivr.net/npm/p5@2.3.4/lib/p5.js"></script></head><body><main></main><script>let imgFile = "asset-1.jpg";
+let img;
+
+let imgFile2 = "asset-2.webp";
+let img2;
+
+async function setup() {
+  createCanvas(windowWidth, windowHeight);
+  background("bisque");
+
+  img = await loadImage(imgFile);
+  img2 = await loadImage(imgFile2);
+
+  image(img, 0, 0, width / 2, height);
+  image(img2, width / 2, 0, width / 2, height);
+}
+
+function drawRandomDaub() {
+  let canvas_x = random(0, width);
+  let canvas_y = random(0, height);
+
+  let sample_color;
+
+  if (canvas_x < width / 2) {
+    let image_x = img.width * (canvas_x / (width / 2));
+    let image_y = img.height * (canvas_y / height);
+
+    sample_color = img.get(image_x, image_y);
+  }
+  else {
+    let image_x = img2.width * ((canvas_x - width / 2) / (width / 2));
+
+    let image_y = img2.height * (canvas_y / height);
+
+    sample_color = img2.get(image_x, image_y);
+  }
+
+  let sample_radius = (mouseX / width) * 50;
+
+  fill(sample_color);
+  noStroke();
+  ellipseMode(CENTER);
+
+  circle(canvas_x, canvas_y, sample_radius);
+}
+
+function draw() {
+  if (img && img2) {
+    for (let i = 0; i < 100; i++) {
+      drawRandomDaub();
+    }
+
+    imageMode(CORNER);
+
+    image(img, 0.3 * width, 0.8 * height, 0.2 * width, 0.2 * height);
+
+    image(img2, 0.8 * width, 0.8 * height, 0.2 * width, 0.2 * height);
+  }
+}
+</script></body></html>

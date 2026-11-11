@@ -1,0 +1,116 @@
+{
+  "projects": [
+    {
+      "slug": "self-portrait",
+      "index": "01",
+      "title": "Self Portrait",
+      "meta": "p5.js · 2026",
+      "medium": "Creative coding / p5.js",
+      "year": "2026",
+      "series": "Course projects",
+      "media": [
+        "../self-portrait/asset-1.jpg"
+      ],
+      "alt": "Self Portrait — actual sketch screenshot",
+      "summary": "A self-portrait built with ellipses, arcs, and simple shapes.",
+      "body": "## Try the sketch\n\nA static drawing exploring how simple geometry can describe a face.\n\n[Open original on p5.js](https://editor.p5js.org/ylyu5/full/Sb7KCeus1) · [View source code](https://editor.p5js.org/ylyu5/sketches/Sb7KCeus1)",
+      "artworkUrl": "self-portrait/"
+    },
+    {
+      "slug": "random-self-portrait",
+      "index": "02",
+      "title": "Random Self Portrait",
+      "meta": "p5.js · 2026",
+      "medium": "Creative coding / p5.js",
+      "year": "2026",
+      "series": "Course projects",
+      "media": [
+        "../random-self-portrait/asset-1.jpg"
+      ],
+      "alt": "Random Self Portrait — actual sketch screenshot",
+      "summary": "A changing portrait made from random colors, marks, and layered lines.",
+      "body": "## Try the sketch\n\nWatch the portrait change as lines and shapes accumulate. Reload the sketch to start again.\n\n[Open original on p5.js](https://editor.p5js.org/ylyu5/full/Aag37c_Vq) · [View source code](https://editor.p5js.org/ylyu5/sketches/Aag37c_Vq)",
+      "artworkUrl": "random-self-portrait/"
+    },
+    {
+      "slug": "particles",
+      "index": "03",
+      "title": "Particles",
+      "meta": "p5.js · 2026",
+      "medium": "Creative coding / p5.js",
+      "year": "2026",
+      "series": "Course projects",
+      "media": [
+        "../particles/asset-1.jpg"
+      ],
+      "alt": "Particles — actual sketch screenshot",
+      "summary": "A colorful particle network that responds to clicks and drawing.",
+      "body": "## Try the sketch\n\nClick to create a burst of particles. Drag to draw a trail. Click inside the sketch, then press Space to clear your added particles.\n\n[Open original on p5.js](https://editor.p5js.org/ylyu5/full/lc6OmefKb) · [View source code](https://editor.p5js.org/ylyu5/sketches/lc6OmefKb)",
+      "artworkUrl": "particles/"
+    },
+    {
+      "slug": "starry-night",
+      "index": "04",
+      "title": "Starry Night",
+      "meta": "p5.js · 2026",
+      "medium": "Creative coding / p5.js",
+      "year": "2026",
+      "series": "Course projects",
+      "media": [
+        "../starry-night/asset-3.jpg"
+      ],
+      "alt": "Starry Night — actual sketch screenshot",
+      "summary": "An image-sampling experiment combining two paintings through circular marks.",
+      "body": "## Try the sketch\n\nMove your cursor horizontally to change the size of the sampled circular marks. Images used in this study include paintings by Vincent van Gogh and Claude Monet.\n\n[Open original on p5.js](https://editor.p5js.org/ylyu5/full/5LQA7pTYe) · [View source code](https://editor.p5js.org/ylyu5/sketches/5LQA7pTYe)",
+      "artworkUrl": "starry-night/"
+    },
+    {
+      "slug": "collage",
+      "index": "05",
+      "title": "Collage",
+      "meta": "p5.js · 2026",
+      "medium": "Creative coding / p5.js",
+      "year": "2026",
+      "series": "Course projects",
+      "media": [
+        "../collage/asset-3.jpg"
+      ],
+      "alt": "Collage — actual sketch screenshot",
+      "summary": "A photo collage assembled from vertical strips, with text drawn by the cursor.",
+      "body": "## Try the sketch\n\nDrag across the sketch to write letters. Click inside the sketch, then press Space to restart the collage. This work uses source photographs from the original p5.js sketch.\n\n[Open original on p5.js](https://editor.p5js.org/ylyu5/full/6M7MWB6l_) · [View source code](https://editor.p5js.org/ylyu5/sketches/6M7MWB6l_)",
+      "artworkUrl": "collage/"
+    },
+    {
+      "slug": "hand-water",
+      "index": "06",
+      "title": "Hand Water",
+      "meta": "WebGL · MediaPipe · 2026",
+      "medium": "Gesture interaction / WebGL",
+      "year": "2026",
+      "series": "Interactive experiments",
+      "alt": "Illustrated transparent ripples and white particles on a green water surface",
+      "summary": "An open hand stirs a transparent water surface. A closed fist gathers the water into white particles.",
+      "body": "An open hand stirs a transparent water surface. A closed fist gathers the water into white particles.\n\nMove your hand in front of the webcam to shape the water, close it to collect a small cloud of particles, then open it again to release them.\n\nHand and face tracking protect the original camera image from the surrounding refraction. Camera frames are processed locally; the artwork does not record or upload video.\n\nOpen the interactive experience below in a desktop browser and allow camera access. Keep your face and one hand visible in good light. The first run downloads the recognition models. A mouse demo is available before enabling the camera.",
+      "media": [
+        "../hand-water/cover.svg"
+      ],
+      "liveUrl": "hand-water/"
+    },
+    {
+      "slug": "manhattan",
+      "index": "07",
+      "title": "Manhattan Nights",
+      "meta": "Three.js · 2026",
+      "medium": "3D landscape / Three.js",
+      "year": "2026",
+      "series": "Course projects",
+      "media": [
+        "../manhattan/cover.png"
+      ],
+      "alt": "Manhattan buildings and city streets beside the river at night",
+      "summary": "An explorable New York nightscape with 15 buildings, city streets, and the East River.",
+      "body": "An explorable New York nightscape with 15 buildings, city streets, and the East River.\n\nDrag to look around. Use WASD or arrow keys to move, Q/E to descend or ascend, Shift to move faster, and R to reset.\n\nThe editable project.json is included in the manhattan folder.",
+      "liveUrl": "manhattan/"
+    }
+  ]
+}

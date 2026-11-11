@@ -1,8 +1,13 @@
-# p5js-portfolio
-My creative coding portfolio — p5.js projects and experiments.
+# Creative Coding Portfolio
 
-## Hand Water
+Each artwork has its own folder and runnable index.html. The root index.html is the portfolio homepage; content/projects.json lists the works.
 
-[Open the interactive artwork](https://ylyu5-kiki.github.io/p5js-portfolio/hand-water/) · [Source and local setup](hand-water/README.md)
+- [Self Portrait](self-portrait/)
+- [Random Self Portrait](random-self-portrait/)
+- [Particles](particles/)
+- [Starry Night](starry-night/)
+- [Collage](collage/)
+- [Hand Water](hand-water/)
+- [Manhattan Nights](manhattan/)
 
-A webcam-based water and particle artwork. Move an open hand to stir transparent water, close it to gather white particles, and open it to release the water again. Hand and face protection reduce refraction distortion. Camera processing stays in the browser.
+Manhattan Nights includes the editable project.json.

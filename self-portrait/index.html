@@ -1,0 +1,82 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><style>html,body{margin:0;background:#fff}canvas{display:block;max-width:100%;height:auto!important}main{display:flex;justify-content:center}</style><script src="https://cdn.jsdelivr.net/npm/p5@2.3.2/lib/p5.js"></script></head><body><main></main><script>function setup() {
+  createCanvas(500, 500);
+
+  noLoop();
+}
+
+function draw() {
+  background(220);
+  
+  noStroke();
+  fill(235, 190, 155);
+  ellipse(250, 230, 250,300); //face
+
+fill("pink");
+  noStroke();
+rect(170, 385, 170, 190); 
+rect(50, 400, 50, 120);
+rect(400, 400, 50, 120);// body
+
+
+  
+fill("black");
+ellipse(130, 130, 70, 100);
+ellipse(110, 180, 80, 110);
+ellipse(110, 240, 80, 110);
+ellipse(110, 300, 100, 120);
+  ellipse(130, 360, 100, 120);
+  ellipse(150, 440, 100, 120); //left hair
+ellipse(370, 140, 70, 100);
+ellipse(390, 180, 80, 110);
+ellipse(400, 240, 90, 120);
+ellipse(400, 290, 100, 120);
+ellipse(380, 360, 100, 120);
+ellipse(360, 440, 100, 120);//right hair
+  ellipse(250, 85, 260, 160); //top
+
+
+   fill(245, 200, 180);
+ellipse(135, 220, 50, 100); //ear
+  
+    noStroke();
+  fill(245, 200, 180);
+  ellipse(250, 230, 220,310); //face
+
+  stroke(0);
+  strokeWeight(5);
+  arc(200, 200, 50, 25, PI, TWO_PI);//wink
+
+  noStroke();
+  fill("white");
+   ellipse(300,200,40,50);//eyeball
+
+  fill("black");
+  circle(300,200,20);
+  fill("white");
+  circle(300,195,6)//puple
+
+
+  
+  fill(169,117,114);
+triangle(240,260,230,240,270,240);//nose
+
+  fill(120, 50, 60);
+  arc(250, 300, 60, 50, 50, PI);
+  //mouth
+
+  fill(150, 200, 255, 40);
+  stroke(0);
+  strokeWeight(4);
+
+ 
+  ellipse(200, 195, 75, 60);
+  ellipse(300, 200, 75, 60);//glasses
+  line(240, 200, 260, 200);
+
+ 
+  fill("black");
+ellipse(130, 130, 80, 110);
+ellipse(365, 130, 80, 110);//front hair
+
+
+}</script></body></html>

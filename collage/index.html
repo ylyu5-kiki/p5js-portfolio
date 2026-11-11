@@ -1,0 +1,104 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><style>html,body{margin:0;background:#fff}canvas{display:block;max-width:100%;height:auto!important}main{display:flex;justify-content:center}</style><script src="https://cdn.jsdelivr.net/npm/p5@2.3.4/lib/p5.js"></script></head><body><main></main><script>let imgFile = "asset-1.jpg";
+let img;
+let stripImgFile = "asset-2.jpg";
+let stripImg
+
+
+let poem = "what a piece of art ... ";
+let currentChar = 0;
+
+let lastCharX = 0;
+let lastCharY = 0;
+let minCharDist = 12;
+
+let scriptFont = "Georgia";
+let dotFont = "Monospace";
+
+let stripCount = 0;
+let totalStrips = 30;
+
+async function setup() {
+  createCanvas(windowWidth, windowHeight);
+  frameRate(5);//5 strip/s
+
+  img = await loadImage(imgFile);
+  img.resize(width, height);
+  image(img, 0, 0, width, height);//background
+
+  stripImg = await  loadImage(stripImgFile);
+  stripImg.resize(width, height);
+  //strip photo
+  textFont(dotFont);
+}
+
+function draw() {
+  
+    if (stripImg && stripCount < totalStrips) {
+
+    let w2 = width / totalStrips;
+
+    let h2 = round(random(0.55 * height, 0.9 * height));
+
+    let x2 = stripCount * w2; // left to right
+
+    let y2 = round(random(0, height - h2));
+
+    let w1 = w2;
+    let h1 = h2;
+
+    let x1 = round(random(0, width - w1));
+    let y1 = round(random(0, height - h1));
+
+    copy(stripImg, x1, y1, w1, h1, x2, y2, w2, h2);
+
+    stripCount = stripCount + 2;
+  }
+}
+
+function mousePressed() {
+  lastCharX = mouseX;
+  lastCharY = mouseY;
+}
+
+function mouseDragged() {
+  let d = dist(mouseX, mouseY, lastCharX, lastCharY);
+
+  if (d > minCharDist) {
+    fill("antiquewhite");
+
+    textSize(max(d, minCharDist));
+    text(poem.charAt(currentChar), mouseX, mouseY);
+
+    currentChar = (currentChar + 1) % poem.length;
+
+    lastCharX = mouseX;
+    lastCharY = mouseY;
+  }
+}
+
+function keyPressed() {
+  if (key === " " && img) {
+    image(img, 0, 0, width, height);
+
+    stripCount = 0;
+    currentChar = 0;
+
+    return false;
+  }
+}
+
+async function windowResized() {
+  resizeCanvas(windowWidth, windowHeight);
+
+  stripCount = totalStrips;
+
+  img = await loadImage(imgFile);
+  img.resize(width, height);
+
+  stripImg = await loadImage(stripImgFile);
+
+  stripImg.resize(width, height);
+  image(img, 0, 0, width, height);
+
+  stripCount = 0;
+}</script></body></html>
